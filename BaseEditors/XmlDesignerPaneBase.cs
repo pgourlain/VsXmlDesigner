@@ -32,7 +32,8 @@ namespace Genius.VisualStudio.BaseEditors
         IVsDeferredDocView, 
         IVsLinkedUndoClient,
         IVsFileChangeEvents,
-        IVsDocDataFileChangeControl       
+        IVsDocDataFileChangeControl,
+        IXmlDesignerPane
         where TDesignerControl : XmlDesignerSurfaceBase
     {
         private string _fileName;

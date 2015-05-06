@@ -128,6 +128,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiagHelper.cs" />
+    <Compile Include="ProxyObservableCollection.cs" />
+    <Compile Include="DynamicIPC.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

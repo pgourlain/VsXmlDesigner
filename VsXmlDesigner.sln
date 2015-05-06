@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseEditors", "BaseEditors\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VS2013DesignerAndEditor", "SampleEditor\VS2013DesignerAndEditor\VS2013DesignerAndEditor.csproj", "{13D5809A-8D69-4664-A9CA-F359E3BADD53}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseEditorsTests", "BaseEditorsTests\BaseEditorsTests.csproj", "{F93C0775-1CB0-486D-B4FD-338001862449}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{13D5809A-8D69-4664-A9CA-F359E3BADD53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13D5809A-8D69-4664-A9CA-F359E3BADD53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13D5809A-8D69-4664-A9CA-F359E3BADD53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F93C0775-1CB0-486D-B4FD-338001862449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F93C0775-1CB0-486D-B4FD-338001862449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F93C0775-1CB0-486D-B4FD-338001862449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F93C0775-1CB0-486D-B4FD-338001862449}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

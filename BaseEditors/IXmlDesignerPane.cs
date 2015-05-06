@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Genius.VisualStudio.BaseEditors
 {
+
+    public interface IXmlDesignerPane
+    {
+
+    }
     public interface IXmlDesignerControl
     {
         void DoIdle();

@@ -17,5 +17,11 @@ namespace Genius.VS2013DesignerAndEditor
         {
 
         }
+
+        protected override void SaveXml(XmlWriter w)
+        {
+            this.Model.delivrables.Items = new projectDelivrablesItem[] { new projectDelivrablesItem { path = "coucou" } };
+            base.SaveXml(w);
+        }
     }
 }

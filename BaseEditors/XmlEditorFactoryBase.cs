@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
+using EnvDTE;
 
 namespace Genius.VisualStudio.BaseEditors
 {
@@ -130,7 +131,10 @@ namespace Genius.VisualStudio.BaseEditors
                 return VSConstants.S_OK;
             }
             else
+            {
+                Debug.WriteLine(string.Format("MapLogicalView notimplemented : {0}", rguidLogicalView));
                 return VSConstants.E_NOTIMPL;   // you must return E_NOTIMPL for any unrecognized rguidLogicalView values
+            }
         }
 
         public int Close()
@@ -180,26 +184,21 @@ namespace Genius.VisualStudio.BaseEditors
                         out System.IntPtr ppunkDocData,
                         out string pbstrEditorCaption,
                         out Guid pguidCmdUI,
-                        out int pgrfCDW)
+                        out int cancelled)
         {
-            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering {0} CreateEditorInstace()", this.ToString()));
+            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering {0} CreateEditorInstance()", this.ToString()));
             // Initialize to null
             ppunkDocView = IntPtr.Zero;
             ppunkDocData = IntPtr.Zero;
-            pgrfCDW = 0;
+            cancelled = 0;
             pbstrEditorCaption = "";
             pguidCmdUI = Guid.Empty;
-            if (!Accept(pszMkDocument))
+            if (!AcceptThisFile(pszMkDocument))
             {
                 //FROM MSDN
                 //When looping through CreateEditorInstance to find an appropriate editor to edit a file, 
                 //if the file is currently open, returning VS_E_UNSUPPORTEDFORMAT will allow the loop to continue without closing the document.
                 return VSConstants.VS_E_UNSUPPORTEDFORMAT;
-            }
-            if (pszPhysicalView == "Code")
-            {
-                CreateStandardXmlDesigner(pszMkDocument);
-                return VSConstants.S_OK;
             }
             pguidCmdUI = this.GetType().GUID;
 
@@ -265,8 +264,19 @@ namespace Genius.VisualStudio.BaseEditors
                 {
                     return VSConstants.VS_E_INCOMPATIBLEDOCDATA;
                 }
+                if (CheckIsOpen(pszMkDocument))
+                {
+                    cancelled = 1;
+                    return VSConstants.S_OK;
+                }
             }
 
+            if (pszPhysicalView == "Code")
+            {
+                CreateStandardXmlDesigner(pszMkDocument, textBuffer);
+                return VSConstants.S_OK;
+            }
+            pbstrEditorCaption = "[Design]";
             // Create the Document (editor)
             WindowPane NewEditor = CreateEditorPane(pszMkDocument, textBuffer);
             ppunkDocView = Marshal.GetIUnknownForObject(NewEditor);
@@ -274,17 +284,49 @@ namespace Genius.VisualStudio.BaseEditors
             return VSConstants.S_OK;
         }
 
+        private bool CheckIsOpen(string pszMkDocument)
+        {
+            IVsUIHierarchy uiHierarchy;
+            uint itemID;
+            IVsWindowFrame windowFrame;
+
+            if (Microsoft.VisualStudio.Shell.VsShellUtilities.IsDocumentOpen(ServiceProvider, pszMkDocument, Guid.Empty,
+                                out uiHierarchy, out itemID, out windowFrame))
+            {
+
+                var dte = (DTE)this.GetService(typeof(SDTE));
+                var wText = VsShellUtilities.GetWindowObject(windowFrame);
+                if (wText != null && wText.Caption.EndsWith("[Design]"))
+                {
+                    wText.Activate();
+                    return true;
+                }
+                foreach (Window w in dte.Windows)
+                {
+                    if (w.Document != null && string.Compare(w.Document.FullName, pszMkDocument, StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        if (w.Caption.EndsWith("[Design]"))
+                        {
+                            w.Activate();
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         protected virtual WindowPane CreateEditorPane(string pszMkDocument, IVsTextLines textBuffer)
         {
             return new XmlDesignerPaneBase<TDesignerControl, TViewModel>(this.Package, pszMkDocument, textBuffer, this.GetType().GUID);
         }
 
-        protected virtual bool Accept(string fileName)
+        protected virtual bool AcceptThisFile(string fileName)
         {
             return true;
         }
 
-        private void CreateStandardXmlDesigner(string pszMkDocument)
+        private void CreateStandardXmlDesigner(string pszMkDocument, IVsTextLines textBuffer)
         {
             Guid XmlTextEditorGuid = new Guid("FA3CD31E-987B-443A-9B81-186104E8DAC1");
 

@@ -9,30 +9,18 @@ using System.Xml.Serialization;
 namespace Genius.VS2013DesignerAndEditor
 {
 
-    public class NotifyPropertyChangedClass : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RPC(string propName)
-        {
-            if (propName == null) return;
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
-        }
-    }
-
     [System.SerializableAttribute()]
 
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.pgourlain.fr/developer/project/2015", IsNullable = false, ElementName ="project")]
 
-    public class MyModel : NotifyPropertyChangedClass
+    public class MyModel
     {
         string _version;
         [XmlAttribute("version")]
-        public string version { get {return _version; } set { _version = value; RPC("version"); } }
+        public string version { get {return _version; } set { _version = value; } }
         projectDescription _description;
         [XmlElement(ElementName = "description")]
-        public projectDescription description { get { return _description; } set { _description = value; RPC("description"); } }
+        public projectDescription description { get { return _description; } set { _description = value; } }
 
         [XmlElement(ElementName = "delivrables")]
         public projectDelivrables delivrables { get; set; }
@@ -40,7 +28,7 @@ namespace Genius.VS2013DesignerAndEditor
 
 
     [System.SerializableAttribute()]
-    public class projectDescription : NotifyPropertyChangedClass
+    public class projectDescription
     {
         [XmlElement(ElementName = "ou")]
         public string ou { get; set; }
@@ -49,15 +37,15 @@ namespace Genius.VS2013DesignerAndEditor
     }
 
     [System.SerializableAttribute()]
-    public class projectDelivrables : NotifyPropertyChangedClass
+    public class projectDelivrables
     {
-        [XmlElement(ElementName = "item")]
+        [XmlArrayItem(ElementName = "item")]
         public projectDelivrablesItem[] Items { get; set; }
     }
 
 
     [System.SerializableAttribute()]
-    public class projectDelivrablesItem : NotifyPropertyChangedClass
+    public class projectDelivrablesItem
     {
         [XmlAttribute("path")]
         public string path { get; set; }

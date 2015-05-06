@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,8 +37,8 @@ namespace Genius.VisualStudio.BaseEditors
             // this gets called when the view model is updated because the Xml Document was updated
             // since we don't get individual PropertyChanged events, just re-set the DataContext
             IXmlViewModel viewModel = DataContext as IXmlViewModel;
-            DataContext = null; // first, set to null so that we see the change and rebind
-            DataContext = viewModel;
+            //DataContext = null; // first, set to null so that we see the change and rebind
+            //DataContext = viewModel;
         }
 
         internal void UnderlyingFileChanged()

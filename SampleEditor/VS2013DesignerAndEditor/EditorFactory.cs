@@ -26,9 +26,9 @@ namespace Genius.VS2013DesignerAndEditor
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering {0} constructor", this.ToString()));
         }
 
-        protected override bool Accept(string fileName)
+        protected override bool AcceptThisFile(string fileName)
         {
-            if (string.Compare(Path.GetFileName(fileName), "project.xml", StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.Compare(Path.GetFileName(fileName), "project1.xml", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 return true;
             }

@@ -12,8 +12,20 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Label Content="version"/>
-            <TextBox Grid.Column="1" Text="{Binding Model.version, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Column="1" Text="{Binding ProxiedModel.version, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="ou" Grid.Row="1" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ProxiedModel.description.ou, UpdateSourceTrigger=PropertyChanged}" />
+            <DataGrid Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding ProxiedModel.delivrables.Items}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="path" Binding="{Binding path}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
     </StackPanel>
 </genius:XmlDesignerSurfaceBase>

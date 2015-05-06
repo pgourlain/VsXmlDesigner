@@ -61,6 +61,19 @@ namespace Genius.VisualStudio.BaseEditors
             }
         }
 
+        DynamicProxyIPC _ProxiedModel;
+        /// <summary>
+        /// return a proxy around your model that supports INotifyPropertyChanged on all public propoerties, use this poperty in your view if your model doesn't support this interface
+        /// </summary>
+        public dynamic ProxiedModel
+        {
+            get
+            {
+                return _ProxiedModel;
+            }
+        }
+
+
         public XmlViewModelBase(XmlStore xmlStore, XmlModel xmlModel, IServiceProvider provider, IVsTextLines buffer)
         {
             if (xmlModel == null)
@@ -191,6 +204,7 @@ namespace Genius.VisualStudio.BaseEditors
                 using (XmlReader reader = GetParseTree().CreateReader())
                 {
                     _Model = ParseXml(reader);
+                    _ProxiedModel = new DynamicProxyIPC(_Model);
                 }
                 if (_Model == null)
                 {
@@ -211,11 +225,13 @@ namespace Genius.VisualStudio.BaseEditors
             BufferDirty = false;
             RegisterFromModel();
 
+            NotifyPropertyChanged(string.Empty);
             if (ViewModelChanged != null)
             {
                 // Update the Designer View
                 ViewModelChanged(this, new EventArgs());
             }
+            
             Debug.WriteLine("leave LoadModelFromXmlModel");
         }
 
@@ -229,6 +245,10 @@ namespace Genius.VisualStudio.BaseEditors
                     npc.PropertyChanged += Model_PropertyChanged;
                 }
             }
+            if (_ProxiedModel != null)
+            {
+                _ProxiedModel.OnAnyChanges += OnAnyChanges;
+            }
         }
 
         private void UnregisterFromModel()
@@ -241,8 +261,17 @@ namespace Genius.VisualStudio.BaseEditors
                     npc.PropertyChanged -= Model_PropertyChanged;
                 }
             }
+
+            if (_ProxiedModel != null)
+            {
+                _ProxiedModel.OnAnyChanges -= OnAnyChanges;
+            }
         }
 
+        private void OnAnyChanges()
+        {
+            DesignerDirty = true;
+        }
         private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             DesignerDirty = true;
@@ -561,7 +590,7 @@ namespace Genius.VisualStudio.BaseEditors
 
         public void UnderlyingFileChanged()
         {
-            this.LoadModelFromXmlModel();
+            //this.LoadModelFromXmlModel();
         }
     }
 }
