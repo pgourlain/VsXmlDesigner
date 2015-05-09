@@ -322,21 +322,6 @@ namespace Genius.VisualStudio.BaseEditors
             if (_xmlLanguageService == null)
             {
                 _xmlLanguageService = _serviceProvider.XmlLanguageService();
-                //IOleServiceProvider vssp = _serviceProvider.GetService(typeof(IOleServiceProvider)) as IOleServiceProvider;
-                //Guid xmlEditorGuid = new Guid("f6819a78-a205-47b5-be1c-675b3c7f0b8e");
-                //Guid iunknown = new Guid("00000000-0000-0000-C000-000000000046");
-                //IntPtr ptr;
-                //if (ErrorHandler.Succeeded(vssp.QueryService(ref xmlEditorGuid, ref iunknown, out ptr)))
-                //{
-                //    try
-                //    {
-                //        _xmlLanguageService = Marshal.GetObjectForIUnknown(ptr) as LanguageService;
-                //    }
-                //    finally
-                //    {
-                //        Marshal.Release(ptr);
-                //    }
-                //}
             }
             return _xmlLanguageService;
         }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Genius.VisualStudio.BaseEditors
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IXmlViewModel
     {
         event EventHandler ViewModelChanged;

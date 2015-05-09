@@ -23,7 +23,7 @@ namespace Genius.VisualStudio.BaseEditors
             {
                 this.Add(item);
             }
-            //init _anychanges after add item, to avoid unexpected notifications
+            //init _anychanges after add items, to avoid unexpected notifications
             _anyChanges = anyChanges;
         }
 
@@ -52,6 +52,8 @@ namespace Genius.VisualStudio.BaseEditors
 
         object[] GetUnderLyingItems()
         {
+            //i think that is not the best way (all items are copied on each collectionChanged)
+            //but theses classes are not designed to manage heavy xml, and i think that it's a bad way to use a designer over an heavy xml
             var pType = _propertyInfo.PropertyType.GetElementType();
             var result = this.Items.OfType<DynamicProxyIPC>().Select(x => x.ProxiedObject).ToArray();
             var array = (object[])Array.CreateInstance(pType, result.Length);

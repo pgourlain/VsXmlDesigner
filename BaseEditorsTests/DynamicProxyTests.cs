@@ -12,7 +12,7 @@ namespace BaseEditorsTests
 {
 
     [TestClass]
-    public class UnitTest1
+    public class DynamicProxyTests
     {
         [TestMethod]
         public void TestProxiedProperty()
