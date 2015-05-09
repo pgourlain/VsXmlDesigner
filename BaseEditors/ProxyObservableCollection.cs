@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,19 +17,29 @@ namespace Genius.VisualStudio.BaseEditors
         object _proxied;
         public ProxyObservableCollection(object proxied, PropertyInfo propertyInfo, IEnumerable<object> list,  Action anyChanges)
         {
-            _anyChanges = anyChanges;
             _proxied = proxied;
             this._propertyInfo = propertyInfo;
             foreach (var item in list)
             {
                 this.Add(item);
             }
+            //init _anychanges after add item, to avoid unexpected notifications
+            _anyChanges = anyChanges;
+        }
+
+        private void FireAnyChanges()
+        {
+            if (_anyChanges != null)
+            {
+                Debug.WriteLine("ProxyCollection fire any changes");
+                _anyChanges();
+            }
         }
 
         protected override void InsertItem(int index, object item)
         {
             //add a proxy around item
-            base.InsertItem(index, new DynamicProxyIPC(item, _anyChanges));
+            base.InsertItem(index, new DynamicProxyIPC(item, this.FireAnyChanges));
         }
 
         protected override void OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -36,8 +47,7 @@ namespace Genius.VisualStudio.BaseEditors
             //update underlying array property
             _propertyInfo.SetValue(_proxied, GetUnderLyingItems());
             base.OnCollectionChanged(e);
-            if (_anyChanges != null)
-                _anyChanges();
+            this.FireAnyChanges();
         }
 
         object[] GetUnderLyingItems()

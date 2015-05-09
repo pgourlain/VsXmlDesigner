@@ -27,6 +27,9 @@ namespace Genius.VisualStudio.BaseEditors
         where TViewModel : XmlViewModelBase<TModel>
         where TModel : new()
     {
+
+        /* i not using EditorFactory base class, because it doesn't work out of the box on my case
+        */
         private Package editorPackage;
         private ServiceProvider vsServiceProvider;
 
@@ -191,7 +194,7 @@ namespace Genius.VisualStudio.BaseEditors
             ppunkDocView = IntPtr.Zero;
             ppunkDocData = IntPtr.Zero;
             cancelled = 0;
-            pbstrEditorCaption = "";
+            pbstrEditorCaption = null;
             pguidCmdUI = Guid.Empty;
             if (!AcceptThisFile(pszMkDocument))
             {
@@ -293,18 +296,13 @@ namespace Genius.VisualStudio.BaseEditors
             if (Microsoft.VisualStudio.Shell.VsShellUtilities.IsDocumentOpen(ServiceProvider, pszMkDocument, Guid.Empty,
                                 out uiHierarchy, out itemID, out windowFrame))
             {
-
+                //loking for the window that contains the designer
                 var dte = (DTE)this.GetService(typeof(SDTE));
-                var wText = VsShellUtilities.GetWindowObject(windowFrame);
-                if (wText != null && wText.Caption.EndsWith("[Design]"))
-                {
-                    wText.Activate();
-                    return true;
-                }
                 foreach (Window w in dte.Windows)
                 {
                     if (w.Document != null && string.Compare(w.Document.FullName, pszMkDocument, StringComparison.OrdinalIgnoreCase) == 0)
                     {
+                        //hack because i dont know how to get WindowPane from Window
                         if (w.Caption.EndsWith("[Design]"))
                         {
                             w.Activate();
@@ -321,11 +319,21 @@ namespace Genius.VisualStudio.BaseEditors
             return new XmlDesignerPaneBase<TDesignerControl, TViewModel>(this.Package, pszMkDocument, textBuffer, this.GetType().GUID);
         }
 
+        /// <summary>
+        /// custom check for the file
+        /// </summary>
+        /// <param name="fileName">full path of file to be open</param>
+        /// <returns>true if file if supported by this editor</returns>
         protected virtual bool AcceptThisFile(string fileName)
         {
             return true;
         }
 
+        /// <summary>
+        /// open file in standard Xml editor
+        /// </summary>
+        /// <param name="pszMkDocument"></param>
+        /// <param name="textBuffer"></param>
         private void CreateStandardXmlDesigner(string pszMkDocument, IVsTextLines textBuffer)
         {
             Guid XmlTextEditorGuid = new Guid("FA3CD31E-987B-443A-9B81-186104E8DAC1");

@@ -14,5 +14,7 @@ namespace Genius.VisualStudio.BaseEditors
         void Close();
 
         void UnderlyingFileChanged();
+
+        dynamic ProxiedModel { get; }
     }
 }

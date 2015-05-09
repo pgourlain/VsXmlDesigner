@@ -81,6 +81,10 @@ namespace BaseEditorsTests
             Assert.AreEqual(1, m.Submodels.Length);
             Assert.AreEqual(1, notify);
             Assert.AreEqual("PGO", m.Submodels[0].Name);
+
+            mp.Submodels[0].Name = "PGOGPO";
+            Assert.AreEqual(2, notify);
+
         }
     }
 

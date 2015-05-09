@@ -10,6 +10,13 @@ namespace Genius.VisualStudio.BaseEditors
 {
     public class XmlDesignerSurfaceBase : UserControl, IXmlDesignerControl
     {
+        protected IXmlViewModel ViewModel
+        {
+            get
+            {
+                return this.DataContext as IXmlViewModel;
+            }
+        }
         public XmlDesignerSurfaceBase(IXmlViewModel viewModel)
         {
             if (viewModel != null)
@@ -25,7 +32,7 @@ namespace Genius.VisualStudio.BaseEditors
             // only call the view model DoIdle if this control has focus
             // otherwise, we should skip and this will be called again
             // once focus is regained
-            IXmlViewModel viewModel = DataContext as IXmlViewModel;
+            IXmlViewModel viewModel = this.ViewModel;
             if (viewModel != null && this.IsKeyboardFocusWithin)
             {
                 viewModel.DoIdle();
@@ -43,7 +50,7 @@ namespace Genius.VisualStudio.BaseEditors
 
         internal void UnderlyingFileChanged()
         {
-            IXmlViewModel viewModel = DataContext as IXmlViewModel;
+            IXmlViewModel viewModel = this.ViewModel;
             if (viewModel != null)
             {
                 viewModel.UnderlyingFileChanged();

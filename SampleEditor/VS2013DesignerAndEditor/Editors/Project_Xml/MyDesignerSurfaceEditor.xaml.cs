@@ -30,6 +30,11 @@ namespace Genius.VS2013DesignerAndEditor
         {
             InitializeComponent();
         }
-        
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //we must add ligne via Proxy in order to notify datagrid
+            this.ViewModel.ProxiedModel.delivrables.Items.Add(new projectDelivrablesItem() { path = "dummy" });
+        }
     }
 }

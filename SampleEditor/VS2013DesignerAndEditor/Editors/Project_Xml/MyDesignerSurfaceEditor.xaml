@@ -16,14 +16,18 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Label Content="version"/>
             <TextBox Grid.Column="1" Text="{Binding ProxiedModel.version, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="ou" Grid.Row="1" />
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ProxiedModel.description.ou, UpdateSourceTrigger=PropertyChanged}" />
-            <DataGrid Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding ProxiedModel.delivrables.Items}" AutoGenerateColumns="False">
+            <StackPanel Orientation="Horizontal" Grid.Row="2">
+                <Button Content="+" Grid.Row="2"  Click="Button_Click"/>
+            </StackPanel>
+            <DataGrid Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding ProxiedModel.delivrables.Items}" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="path" Binding="{Binding path}"/>
+                    <DataGridTextColumn Header="path" Binding="{Binding path, UpdateSourceTrigger=PropertyChanged}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

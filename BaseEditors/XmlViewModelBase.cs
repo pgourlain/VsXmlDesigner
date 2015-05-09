@@ -270,6 +270,7 @@ namespace Genius.VisualStudio.BaseEditors
 
         private void OnAnyChanges()
         {
+            Debug.WriteLine("any changes received");
             DesignerDirty = true;
         }
         private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)

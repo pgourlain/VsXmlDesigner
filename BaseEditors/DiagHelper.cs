@@ -19,10 +19,5 @@ namespace Genius.VisualStudio.BaseEditors
         {
             Debug.WriteLine("ThreadId:{0}, ApartmentState:{1}", Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.GetApartmentState());
         }
-
-        public static Microsoft.XmlEditor.XmlLanguageService GetXmlLanguageService(IServiceProvider spp)
-        {
-            return (Microsoft.XmlEditor.XmlLanguageService)spp.GetService(typeof(Microsoft.XmlEditor.XmlLanguageService));
-        }
     }
 }
