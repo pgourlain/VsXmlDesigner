@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 
 namespace Genius.VisualStudio.BaseEditors
 {
-
+    /// <summary>
+    /// just for a marker use
+    /// </summary>
     interface IProxyProperty
     {
 
@@ -44,9 +46,15 @@ namespace Genius.VisualStudio.BaseEditors
         {
             this._proxiedObject = proxiedObject;
         }
-        internal DynamicProxyIPC(object proxiedObject, Action onAnyChanges)
+
+        /// <summary>
+        /// this constructor is used to bubble any changes to root proxy
+        /// </summary>
+        /// <param name="proxiedObject"></param>
+        /// <param name="onAnyChanges"></param>
+        internal DynamicProxyIPC(object proxiedObject, Action onAnyChanges) 
+            : this(proxiedObject)
         {
-            this._proxiedObject = proxiedObject;
             this.OnAnyChanges += onAnyChanges;
         }
         protected PropertyInfo GetPropertyInfo(string propertyName)
