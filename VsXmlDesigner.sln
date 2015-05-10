@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VS2013DesignerAndEditor", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseEditorsTests", "BaseEditorsTests\BaseEditorsTests.csproj", "{F93C0775-1CB0-486D-B4FD-338001862449}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScreenShots", "ScreenShots", "{8B70E3AA-1798-4C08-909B-E774BFAA8650}"
+	ProjectSection(SolutionItems) = preProject
+		screenshots\screenshot1.png = screenshots\screenshot1.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
