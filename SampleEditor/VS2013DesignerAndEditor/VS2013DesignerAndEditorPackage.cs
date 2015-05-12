@@ -30,15 +30,13 @@ namespace Genius.VS2013DesignerAndEditor
     // This attribute is needed to let the shell know that this package exposes some menus.
     //[ProvideMenuResource("Menus.ctmenu", 1)]
 
-    [ProvideXmlEditorChooserDesignerView("project1", "xml", LogicalViewID.Designer, 0x60,
-    DesignerLogicalViewEditor = typeof(EditorFactory),
-    Namespace = "http://schemas.pgourlain.fr/developer/project/2015",
-    MatchExtensionAndNamespace = false)]
+    //[ProvideXmlEditorChooserDesignerView("project1", "xml", LogicalViewID.Designer, 0x60,
+    //DesignerLogicalViewEditor = typeof(EditorFactory),
+    //Namespace = "http://schemas.pgourlain.fr/developer/project/2015",
+    //MatchExtensionAndNamespace = false)]
     // We register that our editor supports LOGVIEWID_Designer logical view
-//    [ProvideEditorLogicalView(typeof(EditorFactory), LogicalViewID.TextView)]
-//    [ProvideEditorLogicalView(typeof(EditorFactory), LogicalViewID.Primary)]
     [ProvideEditorLogicalView(typeof(EditorFactory), LogicalViewID.Designer)]
-//    [ProvideEditorLogicalView(typeof(EditorFactory), LogicalViewID.Code)]
+    [ProvideEditorLogicalView(typeof(EditorFactory), LogicalViewID.Code)]
     [ProvideEditorExtension(typeof(EditorFactory), ".xml", 50, 
               ProjectGuid = "{A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3}", 
               TemplateDir = "Templates", 
